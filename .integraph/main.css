@@ -1,0 +1,9 @@
+.edge {cursor: pointer;}
+.text-inner-tspan {cursor: pointer;}
+.text-outer-tspan {cursor: pointer;}
+
+:modal {
+    background-color: beige;
+    border: 2px solid burlywood;
+    border-radius: 5px;
+}

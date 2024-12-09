@@ -30,6 +30,8 @@ export const generateArchDiagram = async (integrations: IntegraphYamlBlock[]) =>
 
 export const generateHtml = async (diagram: string, integrations: IntegraphYamlBlock[]) => {
     const template = await fs.readFile(`${__dirname.replace('dist','src')}/assets/template.html`, { encoding: 'utf-8' });
+    const mainJs = await fs.readFile(`${__dirname.replace('dist','src')}/assets/main.js`, { encoding: 'utf-8' });
+    const mainCSS = await fs.readFile(`${__dirname.replace('dist','src')}/assets/main.css`, { encoding: 'utf-8' });
     const outputDir = `${process.cwd()}/.integraph`;
     const filePath = `${outputDir}/arch.html`;
     try {
@@ -37,8 +39,11 @@ export const generateHtml = async (diagram: string, integrations: IntegraphYamlB
     } catch (e) {
       await fs.mkdir(outputDir);
     }
-    const fileContent = template.replace('{{diagram}}', diagram).replace('\'{{integrations}}\'', JSON.stringify(integrations));
+    const fileContent = template.replace('{{diagram}}', diagram);
     await fs.writeFile(filePath, fileContent, { encoding: 'utf-8', flag: 'w+' });
+    await fs.writeFile(`${outputDir}/main.js`, mainJs, { encoding: 'utf-8', flag: 'w+' });
+    await fs.writeFile(`${outputDir}/main.css`, mainCSS, { encoding: 'utf-8', flag: 'w+' });
+    await fs.writeFile(`${outputDir}/integrations.js`, `function getIntegrations () { return ${JSON.stringify(integrations)} }`, { encoding: 'utf-8', flag: 'w+' });
 }
 
 export const getGitRepository = async (path: string) => {

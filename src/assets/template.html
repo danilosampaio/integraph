@@ -1,118 +1,19 @@
 <html>
     <head>
-        <style>
-            .edge {cursor: pointer;}
-            .text-inner-tspan {cursor: pointer;}
-            .text-outer-tspan {cursor: pointer;}
-
-            :modal {
-                background-color: beige;
-                border: 2px solid burlywood;
-                border-radius: 5px;
-            }
-        </style>
+        <link rel="stylesheet" href="main.css">
     </head>
-    <!-- <script type="text/javascript" src="./mermaid.min.js"></script> -->
+    <script type="text/javascript" src="./main.js"></script>
+    <script type="text/javascript" src="./integrations.js"></script>
     <body>
         <script type="module">
             import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
             import { minimalSetup, EditorView } from 'https://cdn.jsdelivr.net/npm/codemirror@6.0.1/+esm';
 
-            window.__integraph = {
-                integrations: '{{integrations}}'
-            }
-
-            const sanitizeComponentName = (name) => {
-                return name.replace(/[^A-Z0-9]/ig, '').toLowerCase();
-            }
-
-            mermaid.registerIconPacks([
-                {
-                    name: 'logos',
-                    loader: () =>
-                    fetch('https://unpkg.com/@iconify-json/logos@1/icons.json').then((res) => res.json()),
-                },
-                {
-                    name: 'ix',
-                    loader: () =>
-                    fetch('https://unpkg.com/@iconify-json/ix@1.2.0/icons.json').then((res) => res.json()),
-                },
-                {
-                    name: 'vscode-icons',
-                    loader: () =>
-                    fetch('https://unpkg.com/@iconify-json/vscode-icons@1.2.3/icons.json').then((res) => res.json()),
-                }
-            ]);
-            mermaid.initialize({
-                startOnLoad: true,
-                securityLevel: 'loose',
-                htmlLabels: true,
-                logLevel: 'trace',
-                deterministicIds: false,
-                deterministicIDSeed: 'gift',
-                layout: 'elk',
-                elk: {
-                    mergeEdges: true,
-                    nodePlacementStrategy: 'BRANDES_KOEPF',
-                    cycleBreakingStrategy: 'GREEDY_MODEL_ORDER'
-                }
-            });
+            initializeMermaid(mermaid);
             await mermaid.run();
 
             if (mermaid.contentLoaded){
-                const edges = document.getElementsByClassName('edge');
-                if (edges.length > 0) {
-                    for (let index = 0; index < edges.length; index++) {
-                        const element = edges[index];
-                        let idAndText = '';
-                        let id = '';
-                        let text = '';
-                        const parent = element.parentNode;
-                        if (parent.childElementCount > 0) {
-                            parent.childNodes.forEach(n => {
-                                if (n.hasChildNodes()) {
-                                    idAndText = n.firstChild.textContent;
-                                    if (idAndText) {
-                                        const parts = idAndText.split('__');
-                                        id = `${parts[0]}.${parts[1]}`;
-                                        if (parts.length > 2) {
-                                            text = parts[2];
-                                            const tspan = n.querySelector('.text-outer-tspan');
-                                            while(n.querySelector('.text-outer-tspan')) {
-                                                n.querySelector('.text-outer-tspan').remove();
-                                            }
-                                            tspan.textContent = text;
-                                            n.querySelector('text').appendChild(tspan);
-                                        } else {
-                                            n.textContent = '';
-                                        }
-                                    }
-                                }
-                            })
-                        }
-                        if (idAndText) {
-                            parent.addEventListener('click', (e) => {
-                                const integrations = window.__integraph.integrations;
-                                const service = integrations.find(s => sanitizeComponentName(s.yaml.service || s.yaml.application || s.yaml.database) === id.split('.')[0] &&
-                                    s?.yaml?.integrations?.find(i => sanitizeComponentName(i.service || i.application || i.database) === id.split('.')[1]));
-
-                                if (service) {
-                                    const targetElement = document.querySelector('.editor');
-                                    targetElement.innerHTML = '';
-                                    new EditorView({
-                                        doc: service.sourceCode,
-                                        extensions: [
-                                            minimalSetup,
-                                        ],
-                                        parent: targetElement,
-                                    });
-                                    const editorDialog = document.getElementById('editorDialog');
-                                    editorDialog.showModal();
-                                }
-                            });
-                        }
-                    }
-                }
+                setupEdges(minimalSetup, EditorView);
             }
         </script>
         <div style="margin: 16px; border: solid hsl(240, 60%, 86.2745098039%) 1px; border-radius: 10px;">
