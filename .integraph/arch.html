@@ -4,10 +4,13 @@
     </head>
     <script type="text/javascript" src="./main.js"></script>
     <script type="text/javascript" src="./integrations.js"></script>
+    <script type="text/javascript" src="./diagram.js"></script>
     <body>
         <script type="module">
             import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
             import { minimalSetup, EditorView } from 'https://cdn.jsdelivr.net/npm/codemirror@6.0.1/+esm';
+            window.__minimalSetup = minimalSetup;
+            window.__EditorView = EditorView;
 
             initializeMermaid(mermaid);
             await mermaid.run();
@@ -19,7 +22,11 @@
         <div style="margin: 16px; border: solid hsl(240, 60%, 86.2745098039%) 1px; border-radius: 10px;">
             <div style="float:right; margin-right: 16px;">
                 <ul style="list-style-type: none; display: flex;">
-                    <li style="padding-left: 5px;"><button title="Refresh" onclick="location.reload(false);">&circlearrowleft;</button></li>
+                    <li style="padding-left: 5px;">
+                        <button title="Refresh" onclick="location.reload(false);">&circlearrowleft;</button>
+                        <button title="Diagram" onclick="openDiagramSourceCode(window.__minimalSetup, window.__EditorView);">&#119628;</button>
+                        <button title="Integrations" onclick="openIntegrations(window.__minimalSetup, window.__EditorView);">&#8633;</button>
+                    </li>
                 </ul>
             </div>
             <pre class="mermaid">

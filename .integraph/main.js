@@ -55,23 +55,40 @@ function updateEdgeText(element) {
 function addEdgeOnClickListener (element, id, minimalSetup, EditorView) {
     element.addEventListener('click', (e) => {
         const integrations = getIntegrations();
-        const service = integrations.find(s => sanitizeComponentName(s.yaml.service || s.yaml.application || s.yaml.database) === id.split('.')[0] &&
-            s?.yaml?.integrations?.find(i => sanitizeComponentName(i.service || i.application || i.database) === id.split('.')[1]));
+        const serviceName = (s) => sanitizeComponentName(s.yaml.service || s.yaml.application || s.yaml.database);
+        const integrationName = (i) => sanitizeComponentName(i.service || i.application || i.database);
+        const idParts = id.split('.');
+        const service = integrations.find(s => serviceName(s) === idParts[0] &&
+            s?.yaml?.integrations?.find(i => integrationName(i) === idParts[1]));
 
         if (service) {
             const targetElement = document.querySelector('.editor');
-            targetElement.innerHTML = '';
-            new EditorView({
-                doc: service.sourceCode,
-                extensions: [
-                    minimalSetup,
-                ],
-                parent: targetElement,
-            });
-            const editorDialog = document.getElementById('editorDialog');
-            editorDialog.showModal();
+            openCodeEditor(targetElement, service.sourceCode, minimalSetup, EditorView);
         }
     });
+}
+
+function openDiagramSourceCode (minimalSetup, EditorView) {
+    const targetElement = document.querySelector('.editor');
+    openCodeEditor(targetElement, getDiagram(), minimalSetup, EditorView);
+}
+
+function openIntegrations (minimalSetup, EditorView) {
+    const targetElement = document.querySelector('.editor');
+    openCodeEditor(targetElement, JSON.stringify(getIntegrations(), null,'\t'), minimalSetup, EditorView);
+}
+
+function openCodeEditor (targetElement, sourceCode, minimalSetup, EditorView) {
+    targetElement.innerHTML = '';
+    new EditorView({
+        doc: sourceCode,
+        extensions: [
+            minimalSetup,
+        ],
+        parent: targetElement,
+    });
+    const editorDialog = document.getElementById('editorDialog');
+    editorDialog.showModal();
 }
 
 function sanitizeComponentName (name) {
@@ -100,9 +117,6 @@ function initializeMermaid (mermaid) {
         startOnLoad: true,
         securityLevel: 'loose',
         htmlLabels: true,
-        logLevel: 'trace',
-        deterministicIds: false,
-        deterministicIDSeed: 'gift',
         layout: 'elk',
         elk: {
             mergeEdges: true,

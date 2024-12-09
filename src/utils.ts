@@ -44,6 +44,7 @@ export const generateHtml = async (diagram: string, integrations: IntegraphYamlB
     await fs.writeFile(`${outputDir}/main.js`, mainJs, { encoding: 'utf-8', flag: 'w+' });
     await fs.writeFile(`${outputDir}/main.css`, mainCSS, { encoding: 'utf-8', flag: 'w+' });
     await fs.writeFile(`${outputDir}/integrations.js`, `function getIntegrations () { return ${JSON.stringify(integrations)} }`, { encoding: 'utf-8', flag: 'w+' });
+    await fs.writeFile(`${outputDir}/diagram.js`, `function getDiagram () { return \`${diagram}\` }`, { encoding: 'utf-8', flag: 'w+' });
 }
 
 export const getGitRepository = async (path: string) => {
