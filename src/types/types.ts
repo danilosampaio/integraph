@@ -49,3 +49,34 @@ export interface ArchitectureDiagramDescription {
     services: string[];
     connections: string[];
 }
+
+export interface IntegraphBlock {
+    startPosition: {
+        row: number;
+        column: number;
+    };
+    endPosition: {
+        row: number;
+        column: number;
+    };
+    text: string;
+}
+
+export interface IntegraphYamlBlock {
+    path?: string | Buffer;
+    startPosition: {
+        row: number;
+        column: number;
+    };
+    endPosition: {
+        row: number;
+        column: number;
+    };
+    yaml: any;
+}
+
+export type IntegraphFile = {
+    path: string;
+    integrations: IntegraphYamlBlock[]
+    repository?: string;
+}

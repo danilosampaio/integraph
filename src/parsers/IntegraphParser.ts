@@ -1,6 +1,6 @@
 import Parser, { SyntaxNode } from 'tree-sitter';
 import * as yaml from 'js-yaml';
-import { Integraph } from '../types/types';
+import { IntegraphYamlBlock, IntegraphBlock } from '../types/types';
 
 export interface Sanitizer {
     sanitize(comment: string): string;
@@ -24,13 +24,17 @@ export default class IntegraphParser {
         this.nodeHandler = nodeHandler;
     }
 
-    parseChildren(children: SyntaxNode[]){
-        const integraphBlocks: string[] = [];
+    parseChildren(children: SyntaxNode[]): IntegraphBlock[]{
+        const integraphBlocks: IntegraphBlock[] = [];
         for (let i = 0; i < children.length; i++) {
             const currentNode = children[i];
             const commentText = this.nodeHandler.getIntegraphText(currentNode);
             if (commentText) {
-                integraphBlocks.push(commentText);
+                integraphBlocks.push({
+                    startPosition: currentNode.startPosition,
+                    endPosition: currentNode.endPosition,
+                    text: commentText
+                });
             } else {
                 if (currentNode.childCount > 0) {
                     integraphBlocks.push(...this.parseChildren(currentNode.children));
@@ -40,16 +44,20 @@ export default class IntegraphParser {
         return integraphBlocks;
     }
 
-    private findIntegraphBlocks(tree: Parser.Tree) {
+    private findIntegraphBlocks(tree: Parser.Tree): IntegraphBlock[] {
         const rootNode = tree.rootNode;
         const children = rootNode.children;
-        const integraphBlocks: string[] = [];
+        const integraphBlocks: IntegraphBlock[] = [];
 
         for (let i = 0; i < children.length; i++) {
             const currentNode = children[i];
             const commentText = this.nodeHandler.getIntegraphText(currentNode);
             if (commentText) {
-                integraphBlocks.push(commentText);
+                integraphBlocks.push({
+                    startPosition: currentNode.startPosition,
+                    endPosition: currentNode.endPosition,
+                    text: commentText
+                });
             }
             if (currentNode.childCount > 0) {
                 integraphBlocks.push(...this.parseChildren(currentNode.children));
@@ -59,13 +67,17 @@ export default class IntegraphParser {
         return integraphBlocks;
     }
 
-    private processYAMLFromComment(comment: string): any {
-        const yamlContent = this.sanitizer.sanitize(comment);
-        const data = yaml.load(yamlContent);
-        return data;
+    private processYAMLFromComment(block: IntegraphBlock): IntegraphYamlBlock {
+        const yamlContent = this.sanitizer.sanitize(block.text);
+        const parsedYaml = yaml.load(yamlContent);
+        return {
+            startPosition: block.startPosition,
+            endPosition: block.endPosition,
+            yaml: parsedYaml
+        };
     }
 
-    public parse (sourceCode: string, verbose: boolean = false): Integraph[] {
+    public parse (sourceCode: string, verbose: boolean = false): IntegraphYamlBlock[] {
         try {
             const tree = this.parser.parse(sourceCode);
             const integraphBlocks = this.findIntegraphBlocks(tree);

@@ -1,0 +1,2 @@
+https://github.com/mermaid-js/mermaid/issues/6024
+https://github.com/mermaid-js/mermaid/issues/5928
