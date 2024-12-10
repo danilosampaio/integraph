@@ -106,5 +106,7 @@ https://icon-sets.iconify.design/logos/
 ## Registered icons:
 
 https://unpkg.com/@iconify-json/logos@1/icons.json
+
 https://unpkg.com/@iconify-json/ix@1.2.0/icons.json
+
 https://unpkg.com/@iconify-json/vscode-icons@1.2.3/icons.json
