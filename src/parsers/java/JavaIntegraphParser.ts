@@ -7,9 +7,10 @@ import JavaNodeHandler from './lib/JavaNodeHandler';
  * @integraph
  * service: Java Parser
  * group: Parsers
+ * icon: logos:java
  * integrations:
  *   - service: tree-sitter
- *     edgeDirection: RB
+ *     edgeDirection: LB
  *     icon: logos:treehouse-icon
  */
 export default class JavaIntegraphParser extends IntegraphParser {

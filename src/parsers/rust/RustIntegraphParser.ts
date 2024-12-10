@@ -7,9 +7,10 @@ import RustNodeHandler from './lib/RustNodeHandler';
  * @integraph
  * service: Rust Parser
  * group: Parsers
+ * icon: logos:rust
  * integrations:
  *   - service: tree-sitter
- *     edgeDirection: RB
+ *     edgeDirection: LB
  *     icon: logos:treehouse-icon
  */
 export default class RustIntegraphParser extends IntegraphParser {

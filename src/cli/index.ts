@@ -8,15 +8,15 @@ import { generateArchDiagram, generateHtml, scanIntegrations } from '../utils';
  * service: integraph CLI
  * icon: logos:terminal
  * integrations:
- *   - service: Typescript Parser
- *     edgeDirection: LR
- *     groupEdge: true
- *     group: Parsers
- *     icon: logos:typescript-icon
  *   - service: Architecture Diagram
  *     edgeDirection: RL
  *     group: Diagrams
  *     icon: ix:diagram-module
+ *   - service: Integraph Runner
+ *     group: Scan files
+ *     edgeDirection: TB
+ *     groupEdge: true
+ *     icon: vscode-icons:file-type-search-result
  */
 program
   .version("1.0.0")

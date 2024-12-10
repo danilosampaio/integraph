@@ -7,9 +7,10 @@ import PythonNodeHandler from './lib/PythonNodeHandler';
  * @integraph
  * service: Python Parser
  * group: Parsers
+ * icon: logos:python
  * integrations:
  *   - service: tree-sitter
- *     edgeDirection: RB
+ *     edgeDirection: LB
  *     icon: logos:treehouse-icon
  */
 export default class PythonIntegraphParser extends IntegraphParser {

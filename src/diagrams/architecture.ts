@@ -31,9 +31,9 @@ export class ArchitectureDiagram {
 
     generateDiagram(diagramDescription: ArchitectureDiagramDescription) {
         const diagram = `\narchitecture-beta
-        ${diagramDescription.groups.join('\n    ')}
-        ${diagramDescription.services.join('\n    ')}
-        ${diagramDescription.connections.join('\n    ')}`;
+    ${diagramDescription.groups.join('\n    ')}\n
+    ${diagramDescription.services.join('\n    ')}\n
+    ${diagramDescription.connections.join('\n    ')}`;
 
         return diagram;
     }
@@ -42,7 +42,7 @@ export class ArchitectureDiagram {
         const originEdgeDirection = integration.edgeDirection ? integration.edgeDirection.at(0) : 'R';
         const targetEdgeDirection = integration.edgeDirection ? integration.edgeDirection.at(1) : 'L';
         const integrationName = integration.application || integration.service || integration.database || '';
-        const integrationIcon = integration.icon ? `(${integration.icon})` : '';
+        const integrationIcon = integration.icon ? `(${integration.icon})` : '(server)';
 
         let integrationDescription = `service ${sanitizeComponentName(integrationName)}${integrationIcon}[${removeSpecialChars(integrationName)}]`;
         if (integration?.group) {
@@ -73,7 +73,7 @@ export class ArchitectureDiagram {
     }
 
     addService(diagramDescription: ArchitectureDiagramDescription, component: Integraph, serviceName: string) {
-        const serviceIcon = component.icon ? `(${component.icon})` : '';
+        const serviceIcon = component.icon ? `(${component.icon})` : '(server)';
         let serviceDescription = `service ${sanitizeComponentName(serviceName)}${serviceIcon}[${removeSpecialChars(serviceName)}]`;
         
         if (component?.group) {

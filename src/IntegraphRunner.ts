@@ -15,6 +15,21 @@ export default class IntegraphRunner {
         return fs.readFile(fileName, { encoding: 'utf8' })
     }
     
+    /**
+     * @integraph
+     * service: Integraph Runner
+     * icon: vscode-icons:file-type-search-result
+     * group: Scan files
+     * integrations:
+     *   - service: Rust Parser
+     *     edgeDirection: LR
+     *     groupEdge: true
+     *     group: Parsers
+     *     icon: logos:rust
+     *   - service: Yaml parser
+     *     edgeDirection: RL
+     *     icon: vscode-icons:file-type-yaml
+     */
     async * scanFiles(pattern: string, exclude?: string, verbose: boolean = false){
         const ignore = ['**/node_modules/**'];
         if (exclude) {
