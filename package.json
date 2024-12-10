@@ -1,7 +1,7 @@
 {
   "name": "integraph",
   "version": "1.0.0",
-  "description": "Smart Integration Mapping",
+  "description": "Create Architecture diagrams from your code.",
   "bin": {
     "integraph": "./dist/cli/index.js"
   },
