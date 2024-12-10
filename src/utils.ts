@@ -7,7 +7,7 @@ import { IntegraphYamlBlock } from "./types/types";
 
 export const scanIntegrations = async (options: { directory: string; verbose?: boolean; exclude?: string; }) => {
     const typescriptRunner = new IntegraphRunner(new TypescriptIntegraphParser());
-    const pattern = `${options.directory}/**/*.{js,ts}`;
+    const pattern = `${options.directory || '.'}/**/*.{js,ts}`;
     const integrations: IntegraphYamlBlock[] = [];
     for await (const entry of typescriptRunner.scanFiles(pattern, options.exclude, options.verbose)) {
         const mappedIntegrations = entry.integrations.map(i => {
