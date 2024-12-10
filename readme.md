@@ -45,7 +45,7 @@ The generated diagram:
 It will search for files containing `@integraph` comments and mapping all integrations, and as results it generates the following files under the directory `.integraph`:
 
 - `diagram.js`
-    - it contains the function `getDiagram` which returns the `mermaid` architeture diagram.
+    - it contains the function `getDiagram` which returns the `mermaid` [architeture diagram](https://mermaid.js.org/syntax/architecture.html).
     ```
     architecture-beta
         group externalapis[External APIs]
