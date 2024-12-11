@@ -30,6 +30,7 @@ architecture-beta
     test('Java - example_01', async () => {
         const sourceCode = await loadFixture('example_01.java');
         const result = javaParser.parse(sourceCode);
+        console.log(result);
         const diagram = architectureDiagram.drawn(result);
         expect(diagram).toBe(`
 architecture-beta
