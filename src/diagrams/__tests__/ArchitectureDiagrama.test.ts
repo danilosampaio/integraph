@@ -1,5 +1,4 @@
 import fs from 'node:fs/promises';
-import path from 'path';
 import {describe, expect, test} from '@jest/globals';
 import TypescriptIntegraphParser from '../../parsers/typescript/TypescriptIntegraphParser';
 import { ArchitectureDiagram } from '../architecture';
@@ -15,6 +14,7 @@ describe('ArchitectureDiagram', () => {
 
     test('Typescript - example_01', async () => {
         const sourceCode = await loadFixture('example_01.ts');
+        console.log(sourceCode);
         const result = typescriptParser.parse(sourceCode);
         const diagram = architectureDiagram.drawn(result);
         expect(diagram).toBe(`
