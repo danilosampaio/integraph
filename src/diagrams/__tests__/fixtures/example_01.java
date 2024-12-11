@@ -8,6 +8,6 @@ public class PaymentGateway {
      *     edgeDirection: RL
      */
     public boolean postTransaction() {
-        // ...
+        return true;
     }
 }
