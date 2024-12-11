@@ -6,7 +6,6 @@ import JavaIntegraphParser from '../../parsers/java/JavaIntegraphParser';
 import { ArchitectureDiagram } from '../architecture';
 
 const loadFixture = (fileName: string) => {
-    console.log({ file: `src/diagrams/__tests__/fixtures/${fileName}` })
     return fs.readFile(`src/diagrams/__tests__/fixtures/${fileName}`, { encoding: 'utf8' })
 }
 
@@ -17,7 +16,7 @@ describe('ArchitectureDiagram', () => {
 
     test('Typescript - example_01', async () => {
         const sourceCode = await loadFixture('example_01.ts');
-        const result = typescriptParser.parse(sourceCode, true);
+        const result = typescriptParser.parse(sourceCode);
         const diagram = architectureDiagram.drawn(result);
         expect(diagram).toBe(`
 architecture-beta
@@ -29,7 +28,7 @@ architecture-beta
     ecommerce:R -[ecommerce__paymentgateway]- L:paymentgateway`);
     });
 
-    test.skip('Java - example_01', async () => {
+    test('Java - example_01', async () => {
         const sourceCode = await loadFixture('example_01.java');
         const result = javaParser.parse(sourceCode);
         const diagram = architectureDiagram.drawn(result);

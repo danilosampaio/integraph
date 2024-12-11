@@ -27,7 +27,6 @@ export default class IntegraphRunner {
     }
 
     loadSourceFile(fileName: string){
-        console.log({ fileName })
         return fs.readFile(fileName, { encoding: 'utf8' })
     }
     
