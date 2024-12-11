@@ -16,7 +16,7 @@ describe('ArchitectureDiagram', () => {
     test('Typescript - example_01', async () => {
         const sourceCode = await loadFixture('example_01.ts');
         console.log(sourceCode);
-        const result = typescriptParser.parse(sourceCode);
+        const result = typescriptParser.parse(sourceCode, true);
         console.log(result);
         const diagram = architectureDiagram.drawn(result);
         expect(diagram).toBe(`
