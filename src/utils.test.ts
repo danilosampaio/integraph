@@ -1,10 +1,15 @@
 import {describe, expect, test} from '@jest/globals';
 import { Options, scanIntegrations } from './utils';
+import { IntegraphYamlBlock } from './types/types';
+import { ArchitectureDiagram } from './diagrams/architecture';
 
 describe('utils', () => {
-    test('Scan Integrations including .ts and .java files', async () => {
+    let integrations: IntegraphYamlBlock[];
+    beforeAll(async () => {
         const options: Options = { directory: 'src/diagrams/__tests__/fixtures' };
-        const integrations = await scanIntegrations(options);
+        integrations = await scanIntegrations(options);
+    });
+    test('Scan Integrations including .ts and .java files', async () => {
         expect(integrations).toStrictEqual([
             expect.objectContaining({
                 startPosition: {
@@ -75,5 +80,20 @@ describe('utils', () => {
                 '}'
             })
           ]);
+    });
+
+    test('generate mermaid diagram from integrations', async () => {
+        let architectureDiagram = new ArchitectureDiagram();
+        const diagram = architectureDiagram.drawn(integrations);
+        expect(diagram).toBe(`
+architecture-beta
+    group externalapis[External APIs]
+
+    service paymentgateway(server)[Payment gateway] in externalapis
+    service bankapi(server)[Bank API]
+    service ecommerce(server)[e_commerce]
+
+    paymentgateway:R -[paymentgateway__bankapi]- L:bankapi
+    ecommerce:R -[ecommerce__paymentgateway]- L:paymentgateway`);
     });
 });

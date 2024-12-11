@@ -63,7 +63,7 @@ export default class IntegraphRunner {
     }
 
     getRunnerByPattern = (fileName: string) => {
-        const runConfig = this.runners.find(r => r.pattern.exec(fileName));
+        const runConfig = this.runners.find(r => r.pattern.test(fileName));
         if (!runConfig) {
             throw new Error(`No parser found for this file type ${fileName}`);
         }
