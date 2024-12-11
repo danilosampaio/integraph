@@ -46,10 +46,10 @@ export default class IntegraphParser {
 
     private findIntegraphBlocks(tree: Parser.Tree): IntegraphBlock[] {
         const rootNode = tree.rootNode;
-        const children = rootNode.children;
+        const children = rootNode?.children;
         const integraphBlocks: IntegraphBlock[] = [];
 
-        for (let i = 0; i < children.length; i++) {
+        for (let i = 0; i < children?.length; i++) {
             const currentNode = children[i];
             const commentText = this.nodeHandler.getIntegraphText(currentNode);
             if (commentText) {
