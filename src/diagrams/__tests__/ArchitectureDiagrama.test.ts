@@ -1,11 +1,13 @@
 import fs from 'node:fs/promises';
+import path from 'path';
 import {describe, expect, test} from '@jest/globals';
 import TypescriptIntegraphParser from '../../parsers/typescript/TypescriptIntegraphParser';
 import JavaIntegraphParser from '../../parsers/java/JavaIntegraphParser';
 import { ArchitectureDiagram } from '../architecture';
 
 const loadFixture = (fileName: string) => {
-    return fs.readFile(`src/diagrams/__tests__/fixtures/${fileName}`, { encoding: 'utf8' })
+    console.log({ file: path.join(__dirname, `fixtures/${fileName}`) })
+    return fs.readFile(path.join(__dirname, `fixtures/${fileName}`), { encoding: 'utf8' })
 }
 
 describe('ArchitectureDiagram', () => {
@@ -15,9 +17,7 @@ describe('ArchitectureDiagram', () => {
 
     test('Typescript - example_01', async () => {
         const sourceCode = await loadFixture('example_01.ts');
-        console.log(sourceCode);
         const result = typescriptParser.parse(sourceCode, true);
-        console.log(result);
         const diagram = architectureDiagram.drawn(result);
         expect(diagram).toBe(`
 architecture-beta
@@ -31,9 +31,7 @@ architecture-beta
 
     test.skip('Java - example_01', async () => {
         const sourceCode = await loadFixture('example_01.java');
-        console.log(sourceCode);
         const result = javaParser.parse(sourceCode);
-        console.log(result);
         const diagram = architectureDiagram.drawn(result);
         expect(diagram).toBe(`
 architecture-beta

@@ -27,6 +27,7 @@ export default class IntegraphRunner {
     }
 
     loadSourceFile(fileName: string){
+        console.log({ fileName })
         return fs.readFile(fileName, { encoding: 'utf8' })
     }
     
@@ -64,7 +65,6 @@ export default class IntegraphRunner {
 
     getRunnerByPattern = (fileName: string) => {
         const runConfig = this.runners.find(r => r.pattern.test(fileName));
-        console.log({ fileName, runConfig })
         if (!runConfig) {
             throw new Error(`No parser found for this file type ${fileName}`);
         }

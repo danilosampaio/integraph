@@ -2,7 +2,7 @@ import {describe, expect, test} from '@jest/globals';
 import { Options, scanIntegrations } from './utils';
 
 describe('utils', () => {
-    test.skip('Scan Integrations including .ts and .java files', async () => {
+    test('Scan Integrations including .ts and .java files', async () => {
         const options: Options = { directory: 'src/diagrams/__tests__/fixtures' };
         const integrations = await scanIntegrations(options);
         expect(integrations).toStrictEqual([
