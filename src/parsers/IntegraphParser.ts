@@ -45,6 +45,7 @@ export default class IntegraphParser {
     }
 
     private findIntegraphBlocks(tree: Parser.Tree): IntegraphBlock[] {
+        console.log({ rootNode: tree.rootNode });
         const rootNode = tree.rootNode;
         const children = rootNode?.children;
         const integraphBlocks: IntegraphBlock[] = [];
