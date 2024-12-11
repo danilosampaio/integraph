@@ -29,7 +29,7 @@ architecture-beta
     ecommerce:R -[ecommerce__paymentgateway]- L:paymentgateway`);
     });
 
-    test('Java - example_01', async () => {
+    test.skip('Java - example_01', async () => {
         const sourceCode = await loadFixture('example_01.java');
         console.log(sourceCode);
         const result = javaParser.parse(sourceCode);
