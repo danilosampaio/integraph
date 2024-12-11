@@ -3,12 +3,27 @@ import fs from 'node:fs/promises';
 import path from 'path';
 import IntegraphParser from './parsers/IntegraphParser';
 import { getGitRepository } from './utils';
+import TypescriptIntegraphParser from './parsers/typescript/TypescriptIntegraphParser';
+import JavaIntegraphParser from './parsers/java/JavaIntegraphParser';
 
 export default class IntegraphRunner {
-    parser: IntegraphParser
+    runners: { parser: IntegraphParser, pattern: RegExp }[];
 
-    constructor(parser: IntegraphParser) {
-        this.parser = parser;
+    constructor() {
+        const typescriptParser = new TypescriptIntegraphParser();
+        const typescriptPattern = new RegExp('^.*\.(js|ts)$');
+        const javaParser = new JavaIntegraphParser();
+        const javaPattern = new RegExp('^.*\.(java)$');
+        this.runners = [
+            {
+                parser: typescriptParser,
+                pattern: typescriptPattern
+            },
+            {
+                parser: javaParser,
+                pattern: javaPattern
+            }
+        ];
     }
 
     loadSourceFile(fileName: string){
@@ -39,11 +54,20 @@ export default class IntegraphRunner {
         for await (const filePath of stream) {
             const fileName = filePath.toString().split('/').slice(1).join('/');
             const sourceCode = await this.loadSourceFile(filePath.toString());
-            const integrations = this.parser.parse(sourceCode, verbose);
+            const integrations = this.getRunnerByPattern(filePath.toString()).parse(sourceCode, verbose);
             if (integrations.length > 0) {
                 const repo = await getGitRepository(path.dirname(filePath.toString()));
                 yield { repo, path: fileName, integrations, sourceCode };
             }
         }
+    }
+
+    getRunnerByPattern = (fileName: string) => {
+        const runConfig = this.runners.find(r => r.pattern.exec(fileName));
+        if (!runConfig) {
+            throw new Error(`No parser found for this file type ${fileName}`);
+        }
+
+        return runConfig.parser;
     }
 }

@@ -9,32 +9,35 @@ const loadFixture = (fileName: string) => {
 }
 
 describe('ArchitectureDiagram', () => {
-    let parser = new TypescriptIntegraphParser();
+    let typescriptParser = new TypescriptIntegraphParser();
+    let javaParser = new TypescriptIntegraphParser();
     let architectureDiagram = new ArchitectureDiagram();
 
-    test('example1', async () => {
-        const sourceCode = await loadFixture('example1.ts');
-        const result = parser.parse(sourceCode);
+    test('Typescript - example_01', async () => {
+        const sourceCode = await loadFixture('example_01.ts');
+        const result = typescriptParser.parse(sourceCode);
         const diagram = architectureDiagram.drawn(result);
         expect(diagram).toBe(`
 architecture-beta
-        group ecommerce[E_Commerce]
-        service recommendations(logos:aws-cloudsearch)[Recommendations] in ecommerce
-    service catalog(database)[Catalog]
-        recommendations:L -- R:catalog`);
+    group externalapis[External APIs]
+
+    service ecommerce(server)[e_commerce]
+    service paymentgateway(server)[Payment gateway] in externalapis
+
+    ecommerce:R -[ecommerce__paymentgateway]- L:paymentgateway`);
     });
 
-    test('example3', async () => {
-        const sourceCode = await loadFixture('example3.ts');
-        const result = parser.parse(sourceCode);
+    test('Java - example_01', async () => {
+        const sourceCode = await loadFixture('example_01.java');
+        const result = javaParser.parse(sourceCode);
         const diagram = architectureDiagram.drawn(result);
         expect(diagram).toBe(`
 architecture-beta
-        group ecommerce[E_Commerce]
-        service marketplace(internet)[Marketplace] in ecommerce
-    service customerservice(server)[Customer Service]
-    service paymentgateway(logos:paypal)[Payment gateway]
-        marketplace:R -- L:customerservice
-    marketplace:B -- T:paymentgateway`);
+    group externalapis[External APIs]
+
+    service paymentgateway(server)[Payment gateway] in externalapis
+    service bankapi(server)[Bank API]
+
+    paymentgateway:R -[paymentgateway__bankapi]- L:bankapi`);
     });
 });

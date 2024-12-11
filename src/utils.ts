@@ -4,23 +4,37 @@ import { ArchitectureDiagram } from "./diagrams/architecture";
 import IntegraphRunner from "./IntegraphRunner";
 import TypescriptIntegraphParser from "./parsers/typescript/TypescriptIntegraphParser";
 import { IntegraphYamlBlock } from "./types/types";
+import JavaIntegraphParser from './parsers/java/JavaIntegraphParser';
 
-export const scanIntegrations = async (options: { directory: string; verbose?: boolean; exclude?: string; }) => {
-    const typescriptRunner = new IntegraphRunner(new TypescriptIntegraphParser());
-    const pattern = `${options.directory || '.'}/**/*.{js,ts}`;
+export type Options = {
+  directory: string;
+  verbose?: boolean;
+  exclude?: string;
+}
+
+export const scanIntegrations = async (options: Options) => {
     const integrations: IntegraphYamlBlock[] = [];
-    for await (const entry of typescriptRunner.scanFiles(pattern, options.exclude, options.verbose)) {
-        const mappedIntegrations = entry.integrations.map(i => {
-          return {
-            ...i,
-            path: entry.path,
-			      repo: entry.repo,
-            sourceCode: entry.sourceCode
-          }
-        })
-        integrations.push(...mappedIntegrations);
+    const runner = new IntegraphRunner();
+    const pattern = `${options.directory || '.'}/**/*.{js,ts,java}`;
+    for await (const entry of runScan(runner, pattern, options)) {
+        integrations.push(...entry);
     }
+    
     return integrations;
+}
+
+export async function* runScan(runner: IntegraphRunner, pattern: string, options: Options) {
+  for await (const entry of runner.scanFiles(pattern, options.exclude, options.verbose)) {
+    const mappedIntegrations = entry.integrations.map(i => {
+      return {
+        ...i,
+        path: entry.path,
+        repo: entry.repo,
+        sourceCode: entry.sourceCode
+      }
+    })
+    yield mappedIntegrations;
+  }
 }
 
 export const generateArchDiagram = async (integrations: IntegraphYamlBlock[]) => {
