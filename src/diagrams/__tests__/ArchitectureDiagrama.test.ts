@@ -6,8 +6,8 @@ import JavaIntegraphParser from '../../parsers/java/JavaIntegraphParser';
 import { ArchitectureDiagram } from '../architecture';
 
 const loadFixture = (fileName: string) => {
-    console.log({ file: path.join(__dirname, `fixtures/${fileName}`) })
-    return fs.readFile(path.join(__dirname, `fixtures/${fileName}`), { encoding: 'utf8' })
+    console.log({ file: `src/diagrams/__tests__/fixtures/${fileName}` })
+    return fs.readFile(`src/diagrams/__tests__/fixtures/${fileName}`, { encoding: 'utf8' })
 }
 
 describe('ArchitectureDiagram', () => {
