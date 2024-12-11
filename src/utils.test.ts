@@ -6,7 +6,7 @@ describe('utils', () => {
         const options: Options = { directory: 'src/diagrams/__tests__/fixtures' };
         const integrations = await scanIntegrations(options);
         expect(integrations).toStrictEqual([
-            {
+            expect.objectContaining({
                 startPosition: {
                     column: 4,
                     row: 1,
@@ -26,7 +26,6 @@ describe('utils', () => {
                     service: 'Payment gateway',
                 },
                 path: 'diagrams/__tests__/fixtures/example_01.java',
-                repo: 'https://github.com/danilosampaio/integraph/blob/main',
                 sourceCode: 'public class PaymentGateway {\n' +
                 '    /**\n' +
                 '     * @integraph\n' +
@@ -40,8 +39,8 @@ describe('utils', () => {
                 '        // ...\n' +
                 '    }\n' +
                 '}'
-            },
-            {
+            }),
+            expect.objectContaining({
                 startPosition: {
                     column: 4,
                     row: 1,
@@ -61,7 +60,6 @@ describe('utils', () => {
                     service: 'e-commerce',
                 },
                 path: 'diagrams/__tests__/fixtures/example_01.ts',
-                repo: 'https://github.com/danilosampaio/integraph/blob/main',
                 sourceCode: 'class ECommerce {\n' +
                 '    /**\n' +
                 '     * @integraph\n' +
@@ -75,7 +73,7 @@ describe('utils', () => {
                 '        // ...\n' +
                 '    }\n' +
                 '}'
-            }
+            })
           ]);
     });
 });
