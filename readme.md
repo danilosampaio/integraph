@@ -72,9 +72,9 @@ It will search for files containing `@integraph` comments and mapping all integr
                 "service":"e-commerce",
                 "integrations":[
                     {
-                    "service":"Payment gateway",
-                    "edgeDirection":"RL",
-                    "group":"External APIs"
+                        "service":"Payment gateway",
+                        "edgeDirection":"RL",
+                        "group":"External APIs"
                     }
                 ]
             },
@@ -85,7 +85,8 @@ It will search for files containing `@integraph` comments and mapping all integr
     ]
     ```
 - `arch.html`
-    - a html page containing the diagram and a few actions such as `refresh`, `show diagram source`, and `show integrations json`
+    - a html page containing the diagram and a few actions such as `refresh`, `show diagram source`, and `show integrations json`. Addtionally, it makes all edges clickable, adding the ability to open the souce file where the integration is defined.
+
     ![Example 01](src/assets/images/example_01.gif)
 - `main.css`
     - this is the css styles for the page `arch.html`
