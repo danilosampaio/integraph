@@ -5,7 +5,7 @@ import TypescriptIntegraphParser from '../../parsers/typescript/TypescriptIntegr
 import { ArchitectureDiagram } from '../architecture';
 
 const loadFixture = (fileName: string) => {
-    return fs.readFile(path.join(__dirname, `fixtures/${fileName}`), { encoding: 'utf8' })
+    return fs.readFile(`src/diagrams/__tests__/fixtures/${fileName}`, { encoding: 'utf8' })
 }
 
 describe('ArchitectureDiagram', () => {
