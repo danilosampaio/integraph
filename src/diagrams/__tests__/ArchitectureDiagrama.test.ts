@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import {describe, expect, test} from '@jest/globals';
 import TypescriptIntegraphParser from '../../parsers/typescript/TypescriptIntegraphParser';
 import { ArchitectureDiagram } from '../architecture';
+import JavaIntegraphParser from '../../parsers/java/JavaIntegraphParser';
 
 const loadFixture = (fileName: string) => {
     return fs.readFile(`src/diagrams/__tests__/fixtures/${fileName}`, { encoding: 'utf8' })
@@ -9,12 +10,11 @@ const loadFixture = (fileName: string) => {
 
 describe('ArchitectureDiagram', () => {
     let typescriptParser = new TypescriptIntegraphParser();
-    let javaParser = new TypescriptIntegraphParser();
+    let javaParser = new JavaIntegraphParser();
     let architectureDiagram = new ArchitectureDiagram();
 
     test('Typescript - example_01', async () => {
         const sourceCode = await loadFixture('example_01.ts');
-        console.log(sourceCode);
         const result = typescriptParser.parse(sourceCode);
         const diagram = architectureDiagram.drawn(result);
         expect(diagram).toBe(`
