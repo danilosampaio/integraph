@@ -31,7 +31,7 @@ export default class IntegraphRunner {
      *     icon: vscode-icons:file-type-yaml
      */
     async * scanFiles(pattern: string, exclude?: string, verbose: boolean = false){
-        const ignore = ['**/node_modules/**'];
+        const ignore = ['**/node_modules/**', 'dist'];
         if (exclude) {
             ignore.push(exclude);
         }
