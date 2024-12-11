@@ -63,13 +63,12 @@ export default class IntegraphRunner {
     }
 
     getRunnerByPattern = (fileName: string) => {
-        return new TypescriptIntegraphParser();
-        // const runConfig = this.runners.find(r => r.pattern.test(fileName));
-        // console.log({ fileName, runConfig })
-        // if (!runConfig) {
-        //     throw new Error(`No parser found for this file type ${fileName}`);
-        // }
+        const runConfig = this.runners.find(r => r.pattern.test(fileName));
+        console.log({ fileName, runConfig })
+        if (!runConfig) {
+            throw new Error(`No parser found for this file type ${fileName}`);
+        }
 
-        // return runConfig.parser;
+        return runConfig.parser;
     }
 }
