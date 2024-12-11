@@ -70,6 +70,7 @@ export default class IntegraphParser {
     private processYAMLFromComment(block: IntegraphBlock): IntegraphYamlBlock {
         const yamlContent = this.sanitizer.sanitize(block.text);
         const parsedYaml = yaml.load(yamlContent);
+        console.log({ parsedYaml })
         return {
             startPosition: block.startPosition,
             endPosition: block.endPosition,
@@ -80,7 +81,9 @@ export default class IntegraphParser {
     public parse (sourceCode: string, verbose: boolean = false): IntegraphYamlBlock[] {
         try {
             const tree = this.parser.parse(sourceCode);
+            console.log({ tree });
             const integraphBlocks = this.findIntegraphBlocks(tree);
+            console.log({ integraphBlocks })
             const result = integraphBlocks.map((comment) => this.processYAMLFromComment(comment));
             return result;
         } catch (e) {
