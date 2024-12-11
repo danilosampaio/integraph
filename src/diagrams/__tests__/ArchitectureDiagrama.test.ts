@@ -1,8 +1,8 @@
 import fs from 'node:fs/promises';
 import {describe, expect, test} from '@jest/globals';
 import TypescriptIntegraphParser from '../../parsers/typescript/TypescriptIntegraphParser';
-import { ArchitectureDiagram } from '../architecture';
 import JavaIntegraphParser from '../../parsers/java/JavaIntegraphParser';
+import { ArchitectureDiagram } from '../architecture';
 
 const loadFixture = (fileName: string) => {
     return fs.readFile(`src/diagrams/__tests__/fixtures/${fileName}`, { encoding: 'utf8' })
