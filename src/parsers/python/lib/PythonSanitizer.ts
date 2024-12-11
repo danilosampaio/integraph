@@ -7,9 +7,8 @@ export default class PythonSanitizer implements Sanitizer {
 
         if (matches) {
             const yamlContent = matches[0]
-                .replace(/"""|@integraph/g, '')  // Remove as aspas triplas e o @integraph
-                .trim();                         // Remove espaços em branco no início e no fim
-            console.log({ yamlContent })
+                .replace(/"""|@integraph/g, '')  // Remove as triple quotes and @integraph
+                .trim();                         // Remove spaces at the begining and at the end
             return yamlContent;
         }
 

@@ -43,15 +43,21 @@ describe('utils', () => {
                   "column":0
                },
                "endPosition":{
-                  "row":4,
+                  "row":7,
                   "column":3
                },
                "yaml":{
                   "service":"Fraud Detection",
-                  "group":"AI Agents"
+                  "group":"AI Agents",
+                  "integrations":[
+                     {
+                        "service":"Load AI Models",
+                        "group":"AI Agents"
+                     }
+                  ]
                },
                "path":"diagrams/__tests__/fixtures/example_01.py",
-               "sourceCode":"\"\"\"\n@integraph\nservice: Fraud Detection\ngroup: AI Agents\n\"\"\"\ndef detectFraud():\n    print(\"all good!\")\n"
+               "sourceCode":"\"\"\"\n@integraph\nservice: Fraud Detection\ngroup: AI Agents\nintegrations:\n  - service: Load AI Models\n    group: AI Agents\n\"\"\"\ndef detectFraud():\n    print(\"all good!\")\n"
             }),
             expect.objectContaining({
                "startPosition":{
@@ -75,7 +81,7 @@ describe('utils', () => {
                "path":"diagrams/__tests__/fixtures/example_01.ts",
                "sourceCode":"class ECommerce {\n    /**\n     * @integraph\n     * service: e-commerce\n     * integrations:\n     *   - service: Payment gateway\n     *     edgeDirection: RL\n     *     group: External APIs\n     */\n    processsPayment() {\n        // ...\n    }\n}"
             })
-         ]);
+        ]);
     });
 
     test('generate mermaid diagram from integrations', async () => {
@@ -89,10 +95,12 @@ architecture-beta
     service paymentgateway(server)[Payment gateway] in externalapis
     service bankapi(server)[Bank API]
     service frauddetection(server)[Fraud Detection] in aiagents
+    service loadaimodels(server)[Load AI Models] in aiagents
     service ecommerce(server)[e_commerce]
 
     paymentgateway:R -[paymentgateway__bankapi]- L:bankapi
     paymentgateway:R -[paymentgateway__frauddetection]- L:frauddetection
+    frauddetection:R -[frauddetection__loadaimodels]- L:loadaimodels
     ecommerce:R -[ecommerce__paymentgateway]- L:paymentgateway`);
     });
 });
