@@ -15,7 +15,7 @@ export type Options = {
 export const scanIntegrations = async (options: Options) => {
     const integrations: IntegraphYamlBlock[] = [];
     const runner = new IntegraphRunner();
-    const pattern = `${options.directory || '.'}/**/*.{js,ts,java,py}`;
+    const pattern = `${options.directory || '.'}/**/*.{js,ts,java,py,rs}`;
     for await (const entry of runScan(runner, pattern, options)) {
         integrations.push(...entry);
     }

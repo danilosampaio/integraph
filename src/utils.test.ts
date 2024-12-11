@@ -9,7 +9,7 @@ describe('utils', () => {
         const options: Options = { directory: 'src/diagrams/__tests__/fixtures' };
         integrations = await scanIntegrations(options);
     });
-    test('Scan Integrations including .ts, .java, and .py files', async () => {
+    test('Scan Integrations including .ts, .java, .rs, and .py files', async () => {
         expect(integrations).toStrictEqual([
             expect.objectContaining({
                "startPosition":{
@@ -61,6 +61,27 @@ describe('utils', () => {
             }),
             expect.objectContaining({
                "startPosition":{
+                  "row":0,
+                  "column":0
+               },
+               "endPosition":{
+                  "row":0,
+                  "column":13
+               },
+               "yaml":{
+                  "service":"Load AI Models",
+                  "group":"AI Agents",
+                  "integrations":[
+                     {
+                        "service":"chatgpt"
+                     }
+                  ]
+               },
+               "path":"diagrams/__tests__/fixtures/example_01.rs",
+               "sourceCode":"// @integraph\n// service: Load AI Models\n// group: AI Agents\n// integrations:\n//   - service: chatgpt\n//\nfn loadModels() {\n    // ...\n}"
+            }),
+            expect.objectContaining({
+               "startPosition":{
                   "row":1,
                   "column":4
                },
@@ -81,7 +102,7 @@ describe('utils', () => {
                "path":"diagrams/__tests__/fixtures/example_01.ts",
                "sourceCode":"class ECommerce {\n    /**\n     * @integraph\n     * service: e-commerce\n     * integrations:\n     *   - service: Payment gateway\n     *     edgeDirection: RL\n     *     group: External APIs\n     */\n    processsPayment() {\n        // ...\n    }\n}"
             })
-        ]);
+         ]);
     });
 
     test('generate mermaid diagram from integrations', async () => {
@@ -96,11 +117,13 @@ architecture-beta
     service bankapi(server)[Bank API]
     service frauddetection(server)[Fraud Detection] in aiagents
     service loadaimodels(server)[Load AI Models] in aiagents
+    service chatgpt(server)[chatgpt]
     service ecommerce(server)[e_commerce]
 
     paymentgateway:R -[paymentgateway__bankapi]- L:bankapi
     paymentgateway:R -[paymentgateway__frauddetection]- L:frauddetection
     frauddetection:R -[frauddetection__loadaimodels]- L:loadaimodels
+    loadaimodels:R -[loadaimodels__chatgpt]- L:chatgpt
     ecommerce:R -[ecommerce__paymentgateway]- L:paymentgateway`);
     });
 });

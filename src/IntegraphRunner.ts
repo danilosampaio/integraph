@@ -6,6 +6,7 @@ import { getGitRepository } from './utils';
 import TypescriptIntegraphParser from './parsers/typescript/TypescriptIntegraphParser';
 import JavaIntegraphParser from './parsers/java/JavaIntegraphParser';
 import PythonIntegraphParser from './parsers/python/PythonIntegraphParser';
+import RustIntegraphParser from './parsers/rust/RustIntegraphParser';
 
 export default class IntegraphRunner {
     runners: { parser: IntegraphParser, pattern: RegExp }[];
@@ -17,6 +18,8 @@ export default class IntegraphRunner {
         const javaPattern = new RegExp('^.*\.(java)$');
         const pythonParser = new PythonIntegraphParser();
         const pythonPattern = new RegExp('^.*\.(py)$');
+        const rustParser = new RustIntegraphParser();
+        const rustPattern = new RegExp('^.*\.(rs)$');
         this.runners = [
             {
                 parser: typescriptParser,
@@ -29,6 +32,10 @@ export default class IntegraphRunner {
             {
                 parser: pythonParser,
                 pattern: pythonPattern
+            },
+            {
+                parser: rustParser,
+                pattern: rustPattern
             }
         ];
     }
