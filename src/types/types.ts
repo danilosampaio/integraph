@@ -46,8 +46,15 @@ export type Integraph = ServiceDescription & ApplicationDescription & DatabaseDe
 
 export interface ArchitectureDiagramDescription {
     groups: string[];
-    services: string[];
+    services: Service[];
     connections: string[];
+}
+
+export interface Service {
+    name: string;
+    icon?: string;
+    label?: string;
+    group?: string;
 }
 
 export interface IntegraphBlock {

@@ -4,5 +4,6 @@ module.exports = {
   transform: {
     "^.+.tsx?$": ["ts-jest",{}],
   },
-  testPathIgnorePatterns: ['fixtures','dist']
+  testPathIgnorePatterns: ['fixtures','dist'],
+  collectCoverage: true
 };

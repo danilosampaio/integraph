@@ -10,13 +10,9 @@ import { generateArchDiagram, generateHtml, scanIntegrations } from '../utils';
  * integrations:
  *   - service: Architecture Diagram
  *     edgeDirection: RL
- *     group: Diagrams
- *     icon: ix:diagram-module
  *   - service: Integraph Runner
- *     group: Scan files
  *     edgeDirection: TB
  *     groupEdge: true
- *     icon: vscode-icons:file-type-search-result
  */
 program
   .version("1.0.0")

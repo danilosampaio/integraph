@@ -5,7 +5,6 @@ class ECommerce {
      * integrations:
      *   - service: Payment gateway
      *     edgeDirection: RL
-     *     group: External APIs
      */
     processsPayment() {
         // ...

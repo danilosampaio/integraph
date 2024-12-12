@@ -1,4 +1,4 @@
-import { ArchitectureDiagramDescription, Integraph, IntegraphYamlBlock, IntegrationDescription } from '../types/types';
+import { ArchitectureDiagramDescription, Integraph, IntegraphYamlBlock, IntegrationDescription, Service } from '../types/types';
 import { removeSpecialChars, sanitizeComponentName } from '../utils';
 
 /**
@@ -32,7 +32,7 @@ export class ArchitectureDiagram {
     generateDiagram(diagramDescription: ArchitectureDiagramDescription) {
         const diagram = `\narchitecture-beta
     ${diagramDescription.groups.join('\n    ')}\n
-    ${diagramDescription.services.join('\n    ')}\n
+    ${diagramDescription.services.map(s => `service ${s.name}${s.icon}[${s.label}]${s.group}`).join('\n    ')}\n
     ${diagramDescription.connections.join('\n    ')}`;
 
         return diagram;
@@ -42,10 +42,18 @@ export class ArchitectureDiagram {
         const originEdgeDirection = integration.edgeDirection ? integration.edgeDirection.at(0) : 'R';
         const targetEdgeDirection = integration.edgeDirection ? integration.edgeDirection.at(1) : 'L';
         const integrationName = integration.application || integration.service || integration.database || '';
-        const integrationIcon = integration.icon ? `(${integration.icon})` : '(server)';
+        const defaultIcon = integration.database ? '(database)' : '(server)';
+        const integrationIcon = integration.icon ? `(${integration.icon})` : defaultIcon;
 
         let integrationDescription = `service ${sanitizeComponentName(integrationName)}${integrationIcon}[${removeSpecialChars(integrationName)}]`;
+        const service: Service = {
+            name: sanitizeComponentName(integrationName),
+            icon: integrationIcon,
+            label: removeSpecialChars(integrationName),
+            group: ''
+        }
         if (integration?.group) {
+            service.group = ` in ${sanitizeComponentName(integration.group)}`;
             const integrationGroupName = sanitizeComponentName(integration.group);
             integrationDescription += ` in ${integrationGroupName}`;
 
@@ -55,9 +63,7 @@ export class ArchitectureDiagram {
             }
         }
 
-        if (!diagramDescription.services.find(s => s.startsWith(`service ${sanitizeComponentName(integrationName)}`))){
-            diagramDescription.services.push(integrationDescription);
-        }
+        this.addOrMergeService(diagramDescription, service);
 
         const groupEdge = integration.groupEdge ? '{group}' : '';
         const edgeText = integration.description
@@ -73,10 +79,18 @@ export class ArchitectureDiagram {
     }
 
     addService(diagramDescription: ArchitectureDiagramDescription, component: Integraph, serviceName: string) {
-        const serviceIcon = component.icon ? `(${component.icon})` : '(server)';
+        const defaultIcon = component.database ? '(database)' : '(server)';
+        const serviceIcon = component.icon ? `(${component.icon})` : defaultIcon;
         let serviceDescription = `service ${sanitizeComponentName(serviceName)}${serviceIcon}[${removeSpecialChars(serviceName)}]`;
+        const service: Service = {
+            name: sanitizeComponentName(serviceName),
+            icon: serviceIcon,
+            label: removeSpecialChars(serviceName),
+            group: ''
+        }
         
         if (component?.group) {
+            service.group = ` in ${sanitizeComponentName(component.group)}`;
             const groupIcon = '';
             const groupName = sanitizeComponentName(component.group);
             const group = `group ${groupName}${groupIcon}[${removeSpecialChars(component.group)}]`;
@@ -86,8 +100,24 @@ export class ArchitectureDiagram {
             serviceDescription += ` in ${sanitizeComponentName(component.group)}`;
         }
         
-        if (!diagramDescription.services.find(s => s.startsWith(`service ${sanitizeComponentName(serviceName)}`))){
-            diagramDescription.services.push(serviceDescription);
+        this.addOrMergeService(diagramDescription, service);
+    }
+
+    addOrMergeService(diagramDescription: ArchitectureDiagramDescription, service: Service) {
+        const existentServiceIndex = diagramDescription.services.findIndex(s => s.name === service.name);
+        if (existentServiceIndex == -1){
+            diagramDescription.services.push(service);
+        } else {
+            diagramDescription.services[existentServiceIndex] = this.mergeServiceAttributes(service, diagramDescription.services[existentServiceIndex]);
         }
+    }
+
+    mergeServiceAttributes(service1: Service, service2: Service) {
+        return {
+            name: service1.name,
+            icon: service1.icon || service2.icon,
+            label: service1.label || service2.label,
+            group: service1.group || service2.group
+        };
     }
 }

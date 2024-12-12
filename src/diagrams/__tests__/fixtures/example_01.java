@@ -7,7 +7,6 @@ public class PaymentGateway {
      *   - service: Bank API
      *     edgeDirection: RL
      *   - service: Fraud Detection
-     *     group: AI Agents
      */
     public boolean postTransaction() {
         // ...

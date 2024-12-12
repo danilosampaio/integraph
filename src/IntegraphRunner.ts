@@ -53,8 +53,6 @@ export default class IntegraphRunner {
      *   - service: Rust Parser
      *     edgeDirection: LR
      *     groupEdge: true
-     *     group: Parsers
-     *     icon: logos:rust
      *   - service: Yaml parser
      *     edgeDirection: RL
      *     icon: vscode-icons:file-type-yaml
