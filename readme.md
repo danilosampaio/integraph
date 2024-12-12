@@ -1,4 +1,4 @@
-# Integraph
+# Integraph [![codecov](https://codecov.io/github/danilosampaio/integraph/graph/badge.svg?token=15VHDPF06H)](https://codecov.io/github/danilosampaio/integraph)
 > Create Architecture diagrams from your code.
 
 ## Architecture
