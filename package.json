@@ -1,6 +1,6 @@
 {
   "name": "integraph",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create Architecture diagrams from your code.",
   "bin": {
     "integraph": "./dist/cli/index.js"
@@ -22,7 +22,8 @@
     "architecture",
     "diagram",
     "mermaid",
-    "parser"
+    "parser",
+    "yaml"
   ],
   "dependencies": {
     "commander": "^12.1.0",
