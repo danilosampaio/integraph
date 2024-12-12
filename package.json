@@ -11,8 +11,13 @@
     "integraph": "./dist/cli/index.js",
     "test": "jest --verbose"
   },
-  "author": "danilo.sampaio@gmail.com",
+  "author": {
+    "email": "danilo.sampaio@gmail.com",
+    "name": "Danilo Sampaio",
+    "url": "https://github.com/danilosampaio"
+  },
   "license": "MIT",
+  "repository": "git@github.com:danilosampaio/integraph.git",
   "dependencies": {
     "commander": "^12.1.0",
     "fast-glob": "^3.3.2",
