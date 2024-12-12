@@ -18,6 +18,12 @@
   },
   "license": "MIT",
   "repository": "git@github.com:danilosampaio/integraph.git",
+  "keywords": [
+    "architecture",
+    "diagram",
+    "mermaid",
+    "parser"
+  ],
   "dependencies": {
     "commander": "^12.1.0",
     "fast-glob": "^3.3.2",
