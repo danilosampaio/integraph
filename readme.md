@@ -94,6 +94,93 @@ It will search for files containing `@integraph` comments and mapping all integr
     - this is the main `js` file which initialize mermaid library, render the diagram, etc.
 
 
+## Service and Integration Attributes
+
+```js
+/**
+ * @integraph
+ * service: <string> Service name. e.g Market Place, Payment API
+ * icon: <string> Icon name. e.g. server, database, logos:google-cloud, vscode-icons:file-type-mermaid
+ * group: <string> Group name. e.g. External APIs, Auth Services
+ * integrations: <object[]> list of integrations
+ *   - service: <string> Service name. e.g Market Place, Payment API
+ *     edgeDirection: <string> direction of the edge. e.g. RL, LR, TB, BT (see https://mermaid.js.org/syntax/architecture.html#edge-direction)
+ *     group: <string> Group name. e.g. External APIs, Auth Services
+ *     groupEdge: true (see https://mermaid.js.org/syntax/architecture.html#edges-out-of-groups)
+ *     arrowedEdge: true (see https://mermaid.js.org/syntax/architecture.html#edges)
+ */
+
+```
+
+## Supported languages
+
+### Typescript/javascript
+
+```js
+class ECommerce {
+    /**
+     * @integraph
+     * service: e-commerce
+     * integrations:
+     *   - service: Payment gateway
+     *     edgeDirection: RL
+     */
+    processsPayment() {
+        // ...
+    }
+}
+```
+
+### Java
+
+```java
+public class PaymentGateway {
+    /**
+     * @integraph
+     * service: Payment gateway
+     * group: External APIs
+     * integrations:
+     *   - service: Bank API
+     *     edgeDirection: RL
+     *   - service: Fraud Detection
+     */
+    public boolean postTransaction() {
+        // ...
+    }
+}
+```
+
+### Python
+
+```python
+"""
+@integraph
+service: Fraud Detection
+group: AI Agents
+integrations:
+  - service: Load AI Models
+    group: AI Agents
+"""
+def detectFraud():
+    print("all good!")
+
+```
+
+### Rust
+
+```rust
+// @integraph
+// service: Load AI Models
+// group: AI Agents
+// integrations:
+//   - service: chatgpt
+//
+fn loadModels() {
+    // ...
+}
+
+```
+
 
 # Mermaid Architecture Diagram
 
