@@ -105,7 +105,10 @@ export class ArchitectureDiagram {
         if (!service.name) return;
         const existentServiceIndex = diagramDescription.services.findIndex(s => s.name === service.name);
         if (existentServiceIndex == -1){
-            diagramDescription.services.push(service);
+            diagramDescription.services.push({
+                ...service,
+                icon: component.database ? '(database)' : '(server)'
+            });
         } else {
             diagramDescription.services[existentServiceIndex] = this.mergeServiceAttributes(service, diagramDescription.services[existentServiceIndex], component);
         }
