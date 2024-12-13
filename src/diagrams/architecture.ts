@@ -42,8 +42,7 @@ export class ArchitectureDiagram {
         const originEdgeDirection = integration.edgeDirection ? integration.edgeDirection.at(0) : 'R';
         const targetEdgeDirection = integration.edgeDirection ? integration.edgeDirection.at(1) : 'L';
         const integrationName = integration.application || integration.service || integration.database || '';
-        const defaultIcon = integration.database ? '(database)' : '(server)';
-        const integrationIcon = integration.icon ? `(${integration.icon})` : defaultIcon;
+        const integrationIcon = integration.icon ? `(${integration.icon})` : '';
 
         let integrationDescription = `service ${sanitizeComponentName(integrationName)}${integrationIcon}[${removeSpecialChars(integrationName)}]`;
         const service: Service = {
@@ -63,7 +62,7 @@ export class ArchitectureDiagram {
             }
         }
 
-        this.addOrMergeService(diagramDescription, service);
+        this.addOrMergeService(diagramDescription, service, integration);
 
         const groupEdge = integration.groupEdge ? '{group}' : '';
         const edgeText = integration.description
@@ -79,8 +78,7 @@ export class ArchitectureDiagram {
     }
 
     addService(diagramDescription: ArchitectureDiagramDescription, component: Integraph, serviceName: string) {
-        const defaultIcon = component.database ? '(database)' : '(server)';
-        const serviceIcon = component.icon ? `(${component.icon})` : defaultIcon;
+        const serviceIcon = component.icon ? `(${component.icon})` : '';
         let serviceDescription = `service ${sanitizeComponentName(serviceName)}${serviceIcon}[${removeSpecialChars(serviceName)}]`;
         const service: Service = {
             name: sanitizeComponentName(serviceName),
@@ -100,22 +98,24 @@ export class ArchitectureDiagram {
             serviceDescription += ` in ${sanitizeComponentName(component.group)}`;
         }
         
-        this.addOrMergeService(diagramDescription, service);
+        this.addOrMergeService(diagramDescription, service, component);
     }
 
-    addOrMergeService(diagramDescription: ArchitectureDiagramDescription, service: Service) {
+    addOrMergeService(diagramDescription: ArchitectureDiagramDescription, service: Service, component: Integraph) {
+        if (!service.name) return;
         const existentServiceIndex = diagramDescription.services.findIndex(s => s.name === service.name);
         if (existentServiceIndex == -1){
             diagramDescription.services.push(service);
         } else {
-            diagramDescription.services[existentServiceIndex] = this.mergeServiceAttributes(service, diagramDescription.services[existentServiceIndex]);
+            diagramDescription.services[existentServiceIndex] = this.mergeServiceAttributes(service, diagramDescription.services[existentServiceIndex], component);
         }
     }
 
-    mergeServiceAttributes(service1: Service, service2: Service) {
+    mergeServiceAttributes(service1: Service, service2: Service, component: Integraph) {
+        const defaultIcon = component.database ? '(database)' : '(server)';
         return {
             name: service1.name,
-            icon: service1.icon || service2.icon,
+            icon: service1.icon || service2.icon || defaultIcon,
             label: service1.label || service2.label,
             group: service1.group || service2.group
         };
