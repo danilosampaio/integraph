@@ -1,6 +1,6 @@
 {
   "name": "integraph",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Create Architecture diagrams from your code.",
   "bin": {
     "integraph": "./dist/cli/index.js"
